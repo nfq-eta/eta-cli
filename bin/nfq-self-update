@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+
+const request = require('request');
+const semver = require('semver');
+const chalk = require('chalk');
+const spawn = require('child_process').spawn;
+const packageConfig = require('../package.json');
+const inquirer = require('inquirer');
+
+// Parse version number from strings such as 'v4.2.0' or `>=4.0.0'
+function parseVersionNumber(versionString) {
+  return parseFloat(versionString.replace(/[^\d.]/g, ''));
+}
+
+// Ensure minimum supported node version is used
+const minNodeVersion = parseVersionNumber(packageConfig.engines.node);
+const currentNodeVersion = parseVersionNumber(process.version);
+if (minNodeVersion > currentNodeVersion) {
+  console.log(chalk.red(`  You must upgrade node to >=${minNodeVersion}.x to use vue-cli`));
+}
+
+function done() {
+  inquirer.prompt([{
+    type: 'confirm',
+    name: 'install',
+    message: 'Update the script?',
+    default: true,
+  }], (answers) => {
+    if (answers.install) {
+      const yarn = spawn('yarn', ['upgrade', packageConfig.name]);
+
+      yarn.stdout.on('data', data => console.log(`${chalk.yellow.bold('update info:')} ${data}`));
+      yarn.stderr.on('data', data => console.log(`${chalk.red.bold('update error:')} +${data}`));
+    }
+  });
+}
+
+request({
+  url: 'https://registry.npmjs.org/nfq-cli',
+  timeout: 1000,
+}, (err, res, body) => {
+  if (!err && res.statusCode === 200) {
+    const latestVersion = JSON.parse(body)['dist-tags'].latest;
+    const localVersion = packageConfig.version;
+    if (semver.lt(localVersion, latestVersion)) {
+      console.log(chalk.yellow('  A newer version of nfq-cli is available.'));
+      console.log();
+      console.log(`  latest:    ${chalk.green(latestVersion)}`);
+      console.log(`  installed: ${chalk.red(localVersion)}`);
+      console.log();
+      done();
+    }
+  } else {
+    console.log(`${chalk.red.bold('update error')}`);
+  }
+});

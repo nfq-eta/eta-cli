@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+const exec = require('child_process').execSync;
+const chalk = require('chalk');
+
+program
+  .option('-d [default]', 'run in background')
+  .option('* [optional]', 'you could pass all docker-compose arguments')
+  .parse(process.argv)
+  .rawArgs.push('-d');
+
+const output = (error, stdout, stderr) => {
+  if (error) console.log(chalk.red.bold.underline('exec error: ') + error);
+  if (stdout) console.log(chalk.green.bold.underline('Result: ') + stdout);
+  if (stderr) console.log(chalk.red('Error: ') + stderr);
+};
+const cmd = `docker-compose ${program.rawArgs.splice(2).join(' ')}`;
+
+try {
+  exec(cmd, output);
+} catch (e) {}
