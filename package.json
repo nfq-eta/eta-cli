@@ -5,7 +5,7 @@
   "preferGlobal": true,
   "bin": {
     "nfq": "bin/nfq",
-    "nfq-init": "bin/nfq-init",
+    "nfq-self-update": "bin/nfq-self-update",
     "nfq-up": "bin/nfq-up"
   },
   "repository": {
