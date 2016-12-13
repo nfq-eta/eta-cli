@@ -1,6 +1,6 @@
 {
   "name": "nfq-cli",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A simple CLI for scaffolding NFQ projects.",
   "preferGlobal": true,
   "bin": {
