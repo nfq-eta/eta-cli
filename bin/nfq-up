@@ -12,5 +12,6 @@ program
 
 const docker = spawn('docker-compose', program.rawArgs.splice(2));
 
-docker.stdout.on('data', data => console.log(`${chalk.yellow.bold('update info:')} ${data}`));
-docker.stderr.on('data', data => console.log(`${chalk.red.bold('update error:')} ${data}`));
+docker.stdin.on('data', data => console.log(`${chalk.yellow.bold('stdin:')} ${data}`));
+docker.stdout.on('data', data => console.log(`${chalk.yellow.bold('stdout:')} ${data}`));
+docker.stderr.on('data', data => console.log(`${chalk.red.bold('stderr:')} ${data}`));
