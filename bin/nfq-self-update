@@ -30,7 +30,7 @@ function done() {
       const yarn = spawn('yarn', ['upgrade', packageConfig.name]);
 
       yarn.stdout.on('data', data => console.log(`${chalk.yellow.bold('update info:')} ${data}`));
-      yarn.stderr.on('data', data => console.log(`${chalk.red.bold('update error:')} +${data}`));
+      yarn.stderr.on('data', data => console.log(`${chalk.red.bold('update error:')} ${data}`));
     }
   });
 }
