@@ -49,8 +49,7 @@ request({
       console.log(`  installed: ${chalk.red(localVersion)}`);
       console.log();
       done();
-    }
-    else {
+    } else {
       console.log(chalk.yellow(` You have latest ${packageConfig.name} version.`));
     }
   } else {
