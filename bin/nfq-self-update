@@ -16,7 +16,7 @@ function parseVersionNumber(versionString) {
 const minNodeVersion = parseVersionNumber(packageConfig.engines.node);
 const currentNodeVersion = parseVersionNumber(process.version);
 if (minNodeVersion > currentNodeVersion) {
-  console.log(chalk.red(`  You must upgrade node to >=${minNodeVersion}.x to use vue-cli`));
+  console.log(chalk.red(`  You must upgrade node to >=${minNodeVersion}.x to use ${packageConfig.name}`));
 }
 
 function done() {
@@ -27,7 +27,7 @@ function done() {
     default: true,
   }], (answers) => {
     if (answers.install) {
-      const yarn = spawn('yarn', ['upgrade', packageConfig.name]);
+      const yarn = spawn('npm', ['update', '-g', packageConfig.name]);
 
       yarn.stdout.on('data', data => console.log(`${chalk.yellow.bold('update info:')} ${data}`));
       yarn.stderr.on('data', data => console.log(`${chalk.red.bold('update error:')} ${data}`));
@@ -36,19 +36,22 @@ function done() {
 }
 
 request({
-  url: 'https://registry.npmjs.org/nfq-cli',
+  url: `https://registry.npmjs.org/${packageConfig.name}`,
   timeout: 1000,
 }, (err, res, body) => {
   if (!err && res.statusCode === 200) {
     const latestVersion = JSON.parse(body)['dist-tags'].latest;
     const localVersion = packageConfig.version;
     if (semver.lt(localVersion, latestVersion)) {
-      console.log(chalk.yellow('  A newer version of nfq-cli is available.'));
+      console.log(chalk.yellow(`  A newer version of ${packageConfig.name} is available.`));
       console.log();
       console.log(`  latest:    ${chalk.green(latestVersion)}`);
       console.log(`  installed: ${chalk.red(localVersion)}`);
       console.log();
       done();
+    }
+    else {
+      console.log(chalk.yellow(` You have latest ${packageConfig.name} version.`));
     }
   } else {
     console.log(`${chalk.red.bold('update error')}`);
