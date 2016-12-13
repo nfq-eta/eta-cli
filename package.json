@@ -1,6 +1,6 @@
 {
   "name": "nfq-cli",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A simple CLI for scaffolding NFQ projects.",
   "preferGlobal": true,
   "bin": {
@@ -59,6 +59,6 @@
     "mocha": "^2.4.5"
   },
   "engines": {
-    "node": ">=7.0.0"
+    "node": ">=6.0.0"
   }
 }
