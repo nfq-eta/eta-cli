@@ -1,4 +1,4 @@
-# nfq-cli
+# nfq-cli [![Build Status](https://travis-ci.org/nfq-eta/nfq-cli.svg?branch=master)](https://travis-ci.org/nfq-eta/nfq-cli)
 
 A simple CLI for scaffolding NFQ projects.
 
