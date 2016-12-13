@@ -13,5 +13,12 @@ open an issue on a template repository.
 
 ``` bash
 yarn
-bin/nfq up
+npm run lint
 ```
+
+## Releasing new version
+1. Check for js errors `npm run lint`
+1. Commit all changes
+1. Tag new version `yarn version`
+1. Push git changes to master branch
+1. Wait for travis to publish
