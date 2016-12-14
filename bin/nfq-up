@@ -3,6 +3,7 @@
 const program = require('commander');
 const spawn = require('child_process').spawn;
 const chalk = require('chalk');
+const LOGO = chalk.bold.yellow(' NFQ ');
 
 program
   .option('-d [default]', 'run in background')
@@ -10,8 +11,12 @@ program
   .parse(process.argv)
   .rawArgs.push('up', '-d');
 
-const docker = spawn('docker-compose', program.rawArgs.splice(2));
+const docker = spawn('docker-compose', program.rawArgs.splice(2), { stdio: 'inherit' });
 
-docker.stdin.on('data', data => console.log(`${chalk.yellow.bold('stdin:')} ${data}`));
-docker.stdout.on('data', data => console.log(`${chalk.yellow.bold('stdout:')} ${data}`));
-docker.stderr.on('data', data => console.log(`${chalk.red.bold('stderr:')} ${data}`));
+docker.on('exit', (error) => {
+  if (!error) {
+    console.log(`${LOGO} ${chalk.green('Success!')}`);
+  } else {
+    console.log(`${LOGO} ${chalk.red('Error!')}`);
+  }
+});
