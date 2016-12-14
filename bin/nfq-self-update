@@ -29,10 +29,15 @@ function done() {
     default: true,
   }], (answers) => {
     if (answers.install) {
-      const yarn = spawn('npm', ['update', '-g', packageConfig.name]);
+      const yarn = spawn('npm', ['update', '-g', packageConfig.name], { stdio: 'inherit' });
 
-      yarn.stdout.on('data', data => console.log(`${LOGO} ${chalk.yellow.bold('update info:')} ${data}`));
-      yarn.stderr.on('data', data => console.log(`${LOGO} ${chalk.red.bold('update error:')} ${data}`));
+      yarn.on('exit', (error) => {
+        if (!error) {
+          console.log(`${LOGO} ${chalk.green('Success!')}`);
+        } else {
+          console.log(`${LOGO} ${chalk.red('Error!')}`);
+        }
+      });
     }
   });
 }
@@ -45,14 +50,14 @@ request({
     const latestVersion = JSON.parse(body)['dist-tags'].latest;
     const localVersion = packageConfig.version;
     if (semver.lt(localVersion, latestVersion)) {
-      console.log(`${LOGO} ${chalk.yellow(`A newer version of ${packageConfig.name} is available.`)}`);
+      console.log(`${LOGO} ${chalk.yellow(`A ${chalk.bold('newer version')} of ${packageConfig.name} is available!`)}`);
       console.log();
       console.log(`  latest:    ${chalk.green(latestVersion)}`);
       console.log(`  installed: ${chalk.red(localVersion)}`);
       console.log();
       done();
     } else {
-      console.log(`${LOGO} ${chalk.yellow(`You have latest ${packageConfig.name} version.`)}`);
+      console.log(`${LOGO} ${chalk.green(`You have latest ${packageConfig.name} ${chalk.bold(localVersion)} version.`)}`);
     }
   } else {
     console.log(`${LOGO} ${chalk.red.bold('update error')}`);
