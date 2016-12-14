@@ -7,6 +7,8 @@ const spawn = require('child_process').spawn;
 const packageConfig = require('../package.json');
 const inquirer = require('inquirer');
 
+const LOGO = chalk.bold.yellow(' NFQ ');
+
 // Parse version number from strings such as 'v4.2.0' or `>=4.0.0'
 function parseVersionNumber(versionString) {
   return parseFloat(versionString.replace(/[^\d.]/g, ''));
@@ -16,7 +18,7 @@ function parseVersionNumber(versionString) {
 const minNodeVersion = parseVersionNumber(packageConfig.engines.node);
 const currentNodeVersion = parseVersionNumber(process.version);
 if (minNodeVersion > currentNodeVersion) {
-  console.log(chalk.red(`  You must upgrade node to >=${minNodeVersion}.x to use ${packageConfig.name}`));
+  console.log(chalk.red(`${LOGO} You must upgrade node to >=${minNodeVersion}.x to use ${packageConfig.name}`));
 }
 
 function done() {
@@ -29,8 +31,8 @@ function done() {
     if (answers.install) {
       const yarn = spawn('npm', ['update', '-g', packageConfig.name]);
 
-      yarn.stdout.on('data', data => console.log(`${chalk.yellow.bold('update info:')} ${data}`));
-      yarn.stderr.on('data', data => console.log(`${chalk.red.bold('update error:')} ${data}`));
+      yarn.stdout.on('data', data => console.log(`${LOGO} ${chalk.yellow.bold('update info:')} ${data}`));
+      yarn.stderr.on('data', data => console.log(`${LOGO} ${chalk.red.bold('update error:')} ${data}`));
     }
   });
 }
@@ -43,16 +45,16 @@ request({
     const latestVersion = JSON.parse(body)['dist-tags'].latest;
     const localVersion = packageConfig.version;
     if (semver.lt(localVersion, latestVersion)) {
-      console.log(chalk.yellow(`  A newer version of ${packageConfig.name} is available.`));
+      console.log(`${LOGO} ${chalk.yellow(`A newer version of ${packageConfig.name} is available.`)}`);
       console.log();
       console.log(`  latest:    ${chalk.green(latestVersion)}`);
       console.log(`  installed: ${chalk.red(localVersion)}`);
       console.log();
       done();
     } else {
-      console.log(chalk.yellow(` You have latest ${packageConfig.name} version.`));
+      console.log(`${LOGO} ${chalk.yellow(`You have latest ${packageConfig.name} version.`)}`);
     }
   } else {
-    console.log(`${chalk.red.bold('update error')}`);
+    console.log(`${LOGO} ${chalk.red.bold('update error')}`);
   }
 });

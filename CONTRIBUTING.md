@@ -19,6 +19,6 @@ npm run lint
 ## Releasing new version
 1. Check for js errors `npm run lint`
 1. Commit all changes
-1. Tag new version `yarn version`
-1. Push git changes to master branch
+1. To release a new version `npm run release`
+1. Push git changes to master branch with all TAGS
 1. Wait for travis to publish
