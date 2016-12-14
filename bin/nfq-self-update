@@ -21,7 +21,7 @@ if (minNodeVersion > currentNodeVersion) {
   console.log(chalk.red(`${LOGO} You must upgrade node to >=${minNodeVersion}.x to use ${packageConfig.name}`));
 }
 
-function done() {
+function done(latestVersion) {
   inquirer.prompt([{
     type: 'confirm',
     name: 'install',
@@ -33,9 +33,9 @@ function done() {
 
       yarn.on('exit', (error) => {
         if (!error) {
-          console.log(`${LOGO} ${chalk.green('Success!')}`);
+          console.log(`${LOGO} ${chalk.green(`Success! Updated to the latest ${chalk.bold(latestVersion)}`)}`);
         } else {
-          console.log(`${LOGO} ${chalk.red('Error!')}`);
+          console.log(`${LOGO} ${chalk.red('Error!')} - Error code: ${chalk.bold(error)}`);
         }
       });
     }
@@ -55,7 +55,7 @@ request({
       console.log(`  latest:    ${chalk.green(latestVersion)}`);
       console.log(`  installed: ${chalk.red(localVersion)}`);
       console.log();
-      done();
+      done(latestVersion);
     } else {
       console.log(`${LOGO} ${chalk.green(`You have latest ${packageConfig.name} ${chalk.bold(localVersion)} version.`)}`);
     }
