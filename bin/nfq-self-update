@@ -29,7 +29,7 @@ function done() {
     default: true,
   }], (answers) => {
     if (answers.install) {
-      const yarn = spawn('npm', ['update', '-g', packageConfig.name], { stdio: 'inherit' });
+      const yarn = spawn('npm', ['install', `${packageConfig.name}@latest`, '-g'], { stdio: 'inherit' });
 
       yarn.on('exit', (error) => {
         if (!error) {
