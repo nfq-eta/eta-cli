@@ -9,16 +9,9 @@ const inquirer = require('inquirer');
 
 const LOGO = chalk.bold.yellow(' NFQ ');
 
-// Parse version number from strings such as 'v4.2.0' or `>=4.0.0'
-function parseVersionNumber(versionString) {
-  return parseFloat(versionString.replace(/[^\d.]/g, ''));
-}
-
 // Ensure minimum supported node version is used
-const minNodeVersion = parseVersionNumber(packageConfig.engines.node);
-const currentNodeVersion = parseVersionNumber(process.version);
-if (minNodeVersion > currentNodeVersion) {
-  console.log(chalk.red(`${LOGO} You must upgrade node to >=${minNodeVersion}.x to use ${packageConfig.name}`));
+if (!semver.satisfies(process.version, packageConfig.engines.node)) {
+  console.log(chalk.red(`${LOGO} You must upgrade node to ${packageConfig.engines.node}.x to use ${packageConfig.name}`));
 }
 
 function done(latestVersion) {
