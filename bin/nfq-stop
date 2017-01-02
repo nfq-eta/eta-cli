@@ -7,11 +7,10 @@ const chalk = require('chalk');
 const LOGO = chalk.bold.yellow(' NFQ ');
 
 program
-  .description('Start the docker containers')
-  .option('-d [default]', 'run in background')
+  .description('Stop the docker containers')
   .option('-f <path> [optional...]', 'Specify a docker-compose config file.')
   .parse(process.argv)
-  .rawArgs.push('up', '-d');
+  .rawArgs.push('stop');
 
 const docker = spawn('docker-compose', process.argv.slice(2), { stdio: 'inherit' });
 

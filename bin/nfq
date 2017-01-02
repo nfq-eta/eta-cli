@@ -4,5 +4,6 @@ require('commander')
   .version(require('../package').version)
   .usage('<command> [options]')
   .command('up', 'Start docker containers', { isDefault: true })
+  .command('stop', 'Stop docker containers')
   .command('self-update', 'Check for updates')
   .parse(process.argv);
