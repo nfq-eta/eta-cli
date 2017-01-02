@@ -4,7 +4,7 @@ const program = require('commander');
 const spawn = require('child_process').spawn;
 const chalk = require('chalk');
 
-const LOGO = chalk.bold.yellow(' NFQ ');
+const LOGO = chalk.bold.yellow(' ETA™ ');
 
 program
   .description('Stop the docker containers')

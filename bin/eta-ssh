@@ -5,7 +5,7 @@ const spawn = require('child_process').spawn;
 const chalk = require('chalk');
 require('dotenv').config();
 
-const LOGO = chalk.bold.yellow(' NFQ ');
+const LOGO = chalk.bold.yellow(' ETA™ ');
 
 program
 // .description('SSH to docker container')

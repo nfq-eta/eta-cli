@@ -7,7 +7,7 @@ const spawn = require('child_process').spawn;
 const packageConfig = require('../package.json');
 const inquirer = require('inquirer');
 
-const LOGO = chalk.bold.yellow(' NFQ ');
+const LOGO = chalk.bold.yellow(' ETA™ ');
 
 // Ensure minimum supported node version is used
 if (!semver.satisfies(process.version, packageConfig.engines.node)) {
