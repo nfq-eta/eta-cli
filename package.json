@@ -1,6 +1,6 @@
 {
   "name": "eta-cli",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "A simple CLI for scaffolding ETA™ projects.",
   "preferGlobal": true,
   "bin": {
