@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+const spawn = require('child_process').spawn;
+const chalk = require('chalk');
+require('dotenv').config();
+
+const LOGO = chalk.bold.yellow(' NFQ ');
+
+program
+// .description('SSH to docker container')
+  .usage('[containerName] [optional...]', 'SSH to specific docker container')
+  .option('-u, --user <user>', 'Specify a docker user. [www-data]', 'www-data')
+  .parse(process.argv);
+
+process.argv = ['exec', '-u', program.user, '-it', program.args[0] || process.env.SERVER_NAME, 'bash'];
+
+const docker = spawn('docker', process.argv, { stdio: 'inherit' });
+
+docker.on('exit', (error) => {
+  if (!error) {
+    console.log(`${LOGO} ${chalk.green('Success!')}`);
+  } else {
+    console.log(`${LOGO} ${chalk.red('Error!')}`);
+  }
+});
