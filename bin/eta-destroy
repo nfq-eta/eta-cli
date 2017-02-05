@@ -12,12 +12,8 @@ program
   .parse(process.argv)
   .rawArgs.push('down', '-c', '--remove-orphans');
 
-console.log(process.argv.slice(2));
-const docker = spawn('docker-compose', process.argv.slice(2), { stdio: 'inherit' });
+spawn('docker-compose', process.argv.slice(2), { stdio: 'inherit' });
 const remove = spawn('docker-compose', ['rm', '-afv', program.file], { stdio: 'inherit' });
-
-// docker-compose down -v --remove-orphans
-// docker-compose rm -afv
 
 remove.on('exit', (error) => {
   if (!error) {
