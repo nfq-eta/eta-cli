@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+const spawn = require('child_process').spawn;
+const chalk = require('chalk');
+const inquirer = require('inquirer');
+
+const LOGO = chalk.bold.yellow(' ETA™ ');
+
+program
+  .description('WARNING! This will remove all containers & images')
+  .parse(process.argv);
+
+// console.dir(program.Command);
+inquirer.prompt([{
+  type: 'confirm',
+  name: 'remove',
+  message: 'WARNING! This will remove & clean all containers. Continue?',
+  default: true,
+}], (answers) => {
+  if (answers.remove) {
+
+    // Cleanup containers
+    const containers = spawn('docker', ['ps', '-a', '-q']);
+    containers.stdout.setEncoding('utf8');
+    containers.stdout.on('data', function (data) {
+
+      data = data.trim().split('\n');
+
+      if (data.length > 0) {
+        console.log(`${LOGO} ${chalk.blue(`Info! removing containers...`)}`);
+
+        for (let container of data) {
+          spawn('docker', ['rm', '-f', container], {
+            stdio: 'ignore'
+          });
+          console.log(`${LOGO} ${chalk.green(`Success! ${chalk.red('×')} removed container ${container}`)}`);
+        }
+
+      } else {
+        console.log(`${LOGO} ${chalk.red('Error! There is no containers to remove')}`);
+      }
+    });
+
+    // docker rmi $(docker images -f "dangling=true" -q)
+    const images = spawn('docker', ['images', '-f', 'dangling=true', '-q']);
+    images.stdout.setEncoding('utf8');
+    images.stdout.on('data', function (data) {
+      data = data.trim().split('\n');
+
+      if (data.length > 0) {
+        console.log(`${LOGO} ${chalk.blue(`Info! removing images...`)}`);
+
+        for (let image of data) {
+          spawn('docker', ['rmi', '-f', image], {
+            stdio: 'ignore'
+          });
+          console.log(`${LOGO} ${chalk.green(`Success! ${chalk.red('×')} removed image ${image}`)}`);
+        }
+      } else {
+        console.log(`${LOGO} ${chalk.red('Error! There is no images to remove')}`);
+      }
+    });
+  }
+});

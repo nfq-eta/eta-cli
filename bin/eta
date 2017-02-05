@@ -7,4 +7,6 @@ require('commander')
   .command('stop', 'Stop docker containers')
   .command('ssh [containerName]', 'SSH to docker container')
   .command('self-update', 'Check for updates')
+  .command('destroy', 'Destroy the docker containers')
+  .command('clean', 'WARNING! This will remove & clean all containers')
   .parse(process.argv);

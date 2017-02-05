@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+const spawn = require('child_process').spawn;
+const chalk = require('chalk');
+
+const LOGO = chalk.bold.yellow(' ETA™ ');
+
+program
+  .description('Destroy the docker containers')
+  .option('-f, --file <path> [optional...]', 'Specify a docker-compose config file.')
+  .parse(process.argv)
+  .rawArgs.push('down', '-c', '--remove-orphans');
+
+console.log(process.argv.slice(2));
+const docker = spawn('docker-compose', process.argv.slice(2), { stdio: 'inherit' });
+const remove = spawn('docker-compose', ['rm', '-afv', program.file], { stdio: 'inherit' });
+
+// docker-compose down -v --remove-orphans
+// docker-compose rm -afv
+
+remove.on('exit', (error) => {
+  if (!error) {
+    console.log(`${LOGO} ${chalk.green('Success!')}`);
+  } else {
+    console.log(`${LOGO} ${chalk.red('Error!')}`);
+  }
+});
