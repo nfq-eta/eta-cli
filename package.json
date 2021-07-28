@@ -47,7 +47,7 @@
     "semver": "^5.1.0",
     "uid": "0.0.2",
     "validate-npm-package-name": "^2.2.2",
-    "snyk": "^1.518.0"
+    "snyk": "^1.667.0"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",
