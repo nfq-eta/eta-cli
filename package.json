@@ -30,7 +30,7 @@
     "prepare": "yarn run snyk-protect"
   },
   "dependencies": {
-    "async": "^2.1.4",
+    "async": "^3.2.2",
     "chalk": "^2.0.0",
     "commander": "^2.9.0",
     "consolidate": "^0.14.0",
